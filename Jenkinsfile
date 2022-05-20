@@ -18,18 +18,24 @@ pipeline {
 		  agent { label 'production' }
 		  stages {
 		    stage("backtothelan.com") {
-			  sh 'cp -R public_html/includes /var/www/backtothelan.com/includes'
-			  sh 'cp -R public_html/images /var/www/backtothelan.com/images'
+			  steps {
+			    sh 'cp -R public_html/includes /var/www/backtothelan.com/includes'
+			    sh 'cp -R public_html/images /var/www/backtothelan.com/images'
+			  }
 			}
 			
 			stage("shop.nokware.net") {
-			  sh 'cp -R public_html/includes /var/www/shop.nokware.net/includes'
-			  sh 'cp -R public_html/images /var/www/shop.nokware.net/images'
+			  steps {
+			    sh 'cp -R public_html/includes /var/www/shop.nokware.net/includes'
+			    sh 'cp -R public_html/images /var/www/shop.nokware.net/images'
+			  }
 			}
 			
 			stage("sugarhousecoins.com") {
-			  sh 'cp -R public_html/includes /var/www/sugarhousecoins.com/includes'
-			  sh 'cp -R public_html/images /var/www/sugarhousecoins.com/images'
+			  steps {
+			    sh 'cp -R public_html/includes /var/www/sugarhousecoins.com/includes'
+			    sh 'cp -R public_html/images /var/www/sugarhousecoins.com/images'
+			  }
 			}
 		  }
 		}
