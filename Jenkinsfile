@@ -35,7 +35,7 @@ pipeline {
                 sh 'cp -R public_html/images /var/www/sugarhousecoins.com/images'
               }
             }
-            stage("mishochu.com") {
+            stage("mishochu.com/shop") {
               steps {
                 sh 'cp -R public_html/includes /var/www/mishochu.com/shop/includes'
                 sh 'cp -R public_html/images /var/www/mishochu.com/shop/images'
