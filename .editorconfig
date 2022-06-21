@@ -1,0 +1,17 @@
+# Default settings:
+# A newline ending every file
+# Use a tab as indentation
+[*]
+insert_final_newline = true
+indent_style = space
+indent_size = 2
+trim_trailing_whitespace = true
+charset = utf-8
+end_of_line = lf
+guidelines = 140
+
+# MarkDown files
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+
