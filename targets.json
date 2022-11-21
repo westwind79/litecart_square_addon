@@ -1,5 +1,5 @@
 {
-  "staging": ["/var/www/shop-test.nokware.net"],
+  "staging": [ "/var/www/shop-test.nokware.net" ],
   "production": [
     "/var/www/backtothelan.com",
     "/var/www/nokware.net/shop",
