@@ -13,7 +13,6 @@ pipeline {
           }
           agent { label 'staging' }
           steps {
-		    sh 'chmod u+x /var/lib/jenkins/workspace/litecart-square-addon_staging/install.sh' 
             sh "./install.sh staging"
           }
         }
@@ -28,7 +27,6 @@ pipeline {
           }
           agent { label 'production' }
           steps {
-		    sh 'chmod -x ./install.sh'
             sh "./install.sh production"
           }
         }
