@@ -13,7 +13,6 @@ pipeline {
           }
           agent { label 'staging' }
           steps {
-		    chmod -x ./install.sh 
             sh "./install.sh staging"
           }
         }
@@ -28,7 +27,6 @@ pipeline {
           }
           agent { label 'production' }
           steps {
-		    chmod -x ./install.sh 
             sh "./install.sh production"
           }
         }
