@@ -13,7 +13,7 @@ pipeline {
           }
           agent { label 'staging' }
           steps {
-		    sh 'chmod u+x /var/lib/jenkins/workspace/ps_litecart-square-addon_staging@tmp' 
+		    sh 'chmod -R u+x /var/lib/jenkins/workspace/ps_litecart-square-addon_staging@tmp' 
             sh "./install.sh staging"
           }
         }
