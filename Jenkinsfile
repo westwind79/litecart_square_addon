@@ -3,44 +3,31 @@ pipeline {
   stages {
     stage("deploy") {
       stages {
-
         stage("staging") {
-          when { branch 'staging' }
+          when {
+            beforeAgent true
+            anyOf {
+              branch 'staging'
+              changelog '.*^\\[ci staging\\] .+$'
+            }
+          }
           agent { label 'staging' }
           steps {
-            sh 'cp -R public_html/includes /var/www/shop-test.nokware.net/includes'
-            sh 'cp -R public_html/images /var/www/shop-test.nokware.net/images'
+            sh "./install.sh staging"
           }
         }
-    
+
         stage ("production"){
-          when { branch 'master' }
+          when {
+            beforeAgent true
+            anyOf {
+              branch 'master'
+              changelog '.*^\\[ci production\\] .+$'
+            }
+          }
           agent { label 'production' }
-          stages {
-            stage("backtothelan.com") {
-              steps {
-                sh 'cp -R public_html/includes /var/www/backtothelan.com/includes'
-                sh 'cp -R public_html/images /var/www/backtothelan.com/images'
-              }
-            }
-            stage("shop.nokware.net") {
-              steps {
-                sh 'cp -R public_html/includes /var/www/shop.nokware.net/includes'
-                sh 'cp -R public_html/images /var/www/shop.nokware.net/images'
-              }
-            }
-            stage("sugarhousecoins.com") {
-              steps {
-                sh 'cp -R public_html/includes /var/www/sugarhousecoins.com/includes'
-                sh 'cp -R public_html/images /var/www/sugarhousecoins.com/images'
-              }
-            }
-            stage("mishochu.com/shop") {
-              steps {
-                sh 'cp -R public_html/includes /var/www/mishochu.com/shop/includes'
-                sh 'cp -R public_html/images /var/www/mishochu.com/shop/images'
-              }
-            }
+          steps {
+            sh "./install.sh production"
           }
         }
       }
