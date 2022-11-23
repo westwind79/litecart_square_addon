@@ -20,10 +20,7 @@ pipeline {
         stage ("production"){
           when {
             beforeAgent true
-            anyOf {
-              branch 'master'
-              changelog '.*^\\[ci production\\] .+$'
-            }
+            expression { false }
           }
           agent { label 'production' }
           steps {
