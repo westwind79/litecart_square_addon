@@ -22,8 +22,9 @@ Done!
 # How To Find Your API Keys #
 #############################
 
-1. Sign in to your Stripe account.
-2. Toggle live or test mode [o] View test data
+1. Sign in to your Square account.
+2. Go to App Integrations
+2. Toggle sandbox or production mode [o] View test data
 3. Go to Developers from the menu and select API keys.
 
 #################################
