@@ -8,9 +8,6 @@
     public $version = '1.0';
     public $website = 'https://www.squareup.com/';
     public $priority = 0;
-    public $production_url = 'https://connect.squareup.com/v2';
-    public $sandbox_url = 'https://connect.squareupsandbox.com/v2';
-    public $base_url = '';
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
 
@@ -98,7 +95,7 @@
         $request = [
           'idempotency_key' => uniqid(),
           'redirect_url' => document::ilink('order_process'),
-          'pre_populate_buyer_email' => $order->data['customer_email'],
+          'pre_populate_buyer_email' => $order->data['customer']['email'],
           'cancel_url' => document::ilink('checkout'),
           'order' => [
             'location_id' => $this->settings['location_id'],
@@ -173,6 +170,9 @@
     }
 
     private function _call($method, $endpoint, $request = null) {
+      $production_url = 'https://connect.squareup.com/v2';
+      $sandbox_url = 'https://connect.squareupsandbox.com/v2';
+      $base_url = '';
       if (empty($this->settings['is_production'])) {
          $base_url = $sandbox_url;
       } else {
