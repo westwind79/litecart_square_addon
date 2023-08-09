@@ -17,6 +17,11 @@
     // If not enabled
       if (empty($this->settings['status'])) return;
 
+    // If not in geo zone
+    if (!empty($this->settings['geo_zone_id'])) {
+      if (!reference::country($customer['country_code'])->in_geo_zone($customer['zone_code'], $this->settings['geo_zone_id'])) return;
+    }
+
     // disable for forbidden options (only works with Check Box styled options
       $forbidden_options = preg_split('#\s*,\s*#', $this-> settings['forbidden_options']);
       if (!is_bool($forbidden_options)) {
@@ -112,6 +117,7 @@
         }
 
         return [
+          'is_payed' => 'true',
           'order_status_id' => $this->settings['order_status_id'],
           'order_id' => $result['order_id'],
         ];
@@ -182,13 +188,6 @@
           'function' => 'text()',
         ],
         [
-          'key' => 'forbidden_options',
-          'default_value' => '',
-          'title' => language::translate(__CLASS__.':title_forbidden_options', 'Forbidden Options'),
-          'description' => language::translate(__CLASS__.':description_forbidden_options', 'A comma separated list of payment options for which this module should be disabled.'),
-          'function' => 'text()',
-        ],
-        [
           'key' => 'application_id',
           'default_value' => '',
           'title' => language::translate(__CLASS__.':title_application_id', 'Application ID'),
@@ -210,11 +209,41 @@
           'function' => 'text()',
         ],
         [
+          'key' => 'order_status_id',
+          'default_value' => '0',
+          'title' => language::translate(__CLASS__.':title_order_status', 'Order Status'),
+          'description' => language::translate(__CLASS__.':description_order_status', 'Give orders made with this payment module the following order status.'),
+          'function' => 'order_status()',
+        ],
+        [
+          'key' => 'geo_zone_id',
+          'default_value' => '',
+          'title' => language::translate(__CLASS__.':title_geo_zone_limitation', 'Geo Zone Limitation'),
+          'description' => language::translate(__CLASS__.':description_geo_zone', 'Limit this module to the selected geo zone. Otherwise, leave it blank.'),
+          'function' => 'geo_zone()',
+        ],
+        [
           'key' => 'priority',
           'default_value' => '0',
           'title' => language::translate(__CLASS__.':title_priority', 'Priority'),
           'description' => language::translate(__CLASS__.':description_priority', 'Process this module in the given priority order.'),
           'function' => 'int()',
+        ],
+        [
+          'key' => 'forbidden_items',
+          'default_value' => '',
+          'title' => language::translate(__CLASS__.':title_forbidden_Items', 'Forbidden Items'),
+          'description' => language::translate(__CLASS__.':description_forbidden_items', 'A comma separated list of items (by product ID#) for which this module should be disabled.'),
+          'function' => 'products()',
+          'multiple' => 'true',
+        ],
+        [
+          'key' => 'forbidden_options',
+          'default_value' => '',
+          'title' => language::translate(__CLASS__.':title_forbidden_options', 'Forbidden Options'),
+          'description' => language::translate(__CLASS__.':description_forbidden_options', 'A comma separated list of payment options for which this module should be disabled.'),
+          'function' => 'attribute_groups()',
+          'multiple' => 'true',
         ],
       ];
     }
