@@ -189,6 +189,8 @@
       $url = $base_url.$endpoint; 
       $log_message = '['. date('Y-m-d H:i:s e').'] calling square url: ' . $url . PHP_EOL . PHP_EOL;
       file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
+      $log_message = 'with data: ' . json_encode($request) . PHP_EOL . PHP_EOL;
+      file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
       $response = $client->call($method, $url, $request, $headers);
 
       if (!$result = json_decode($response, true)) {
