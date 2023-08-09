@@ -9,6 +9,7 @@ logs
 *.sw[opu]
 
 public/
+temp-public/
 
 # npm
 node_modules/
@@ -17,3 +18,5 @@ node_modules/
 
 *.lock
 dist/
+gogs
+secret-keys.json
