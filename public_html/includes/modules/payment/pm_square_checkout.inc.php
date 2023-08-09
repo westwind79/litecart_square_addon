@@ -14,28 +14,63 @@
 
     public function options($items, $subtotal, $tax, $currency_code, $customer) {
 
-    // If not enabled
+      // If not enabled
       if (empty($this->settings['status'])) return;
 
-    // If not in geo zone
-    if (!empty($this->settings['geo_zone_id'])) {
-      if (!reference::country($customer['country_code'])->in_geo_zone($customer['zone_code'], $this->settings['geo_zone_id'])) return;
-    }
+      // If not in geo zone
+      if (!empty($this->settings['geo_zone_id'])) {
+        if (!reference::country($customer['country_code'])->in_geo_zone($customer['zone_code'], $this->settings['geo_zone_id'])) return;
+      }
 
-    // disable for forbidden options (only works with Check Box styled options
-      $forbidden_options = preg_split('#\s*,\s*#', $this-> settings['forbidden_options']);
-      if (!is_bool($forbidden_options)) {
-        foreach ($forbidden_options as $forbidden_option) {
-          foreach ($items as $item) {
-            $options = $item['options'];
+      $forbidden_items = $this-> settings['forbidden_items'];
+      if (!empty($forbidden_items)) {
+        foreach ($items as $item) {
 
-            if (isset($options[$forbidden_option])) {
-              return;
-            }
+          $product_id = $item['product_id'];
+
+          $result = array_search(strval($product_id), $forbidden_items);
+
+          if (!is_bool($result)) {
+            $log_message = '['. date('Y-m-d H:i:s e').'] product is **forbidden**: ' . json_encode($item['name']) . PHP_EOL . PHP_EOL;
+            file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
+            return;
+          } else {
+
           }
         }
-      }     
+      }
 
+
+      $forbidden_options = $this-> settings['forbidden_options'];
+      if (!empty($forbidden_options)) {
+        $forbidden_option_names = array();
+
+        foreach ($forbidden_options as $forbidden_option) {
+          $forbidden_attribute_group = new ent_attribute_group($forbidden_option);
+
+          $selected_language_code = language::$selected['code'];
+          $forbidden_option_name = $forbidden_attribute_group->data['name'][$selected_language_code];
+          array_push($forbidden_option_names, $forbidden_option_name);
+        }
+
+        foreach ($items as $item) {
+            $options = $item['options'];
+            if (!empty($options)) {
+              $item_option_names = array_keys($options);
+              if (!empty($item_option_names)) {
+                foreach ($item_option_names as $item_option_name) {
+                  $result = array_search($item_option_name, $forbidden_option_names);
+
+                  if (!is_bool($result)) {
+                    $log_message = '['. date('Y-m-d H:i:s e').'] option is **forbidden**: ' . json_encode($item['name']) . PHP_EOL . PHP_EOL;
+                    file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
+                    return;
+                  } else { }
+                }
+              }
+            }
+          }
+      }
       $options = [];
 
         $options[] = [
