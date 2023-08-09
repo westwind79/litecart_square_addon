@@ -95,25 +95,23 @@
         $request = [
           'idempotency_key' => uniqid(),
           'redirect_url' => document::ilink('order_process'),
-          'pre_populate_buyer_email' => $order->data['customer']['email'],
+          'pre_populated_data' => [
+            'buyer_email' => $order->data['customer']['email'],
+          ],
           'cancel_url' => document::ilink('checkout'),
           'order' => [
             'location_id' => $this->settings['location_id'],
-            'reference_id' => $order->data['id'],
+            'reference_id' => strval($order->data['id']),
             'name' => settings::get('store_name'),
             'line_items' => [],
-            'price_money' => [
-              'amount' => $order->data['payment_due'],
-              'currency' => $order->data['currency_code'],
-            ],
           ],
         ];
 
         foreach ($order->data['items'] as $item) {
            if ($item['price'] <= 0) continue;
-           $request['line_items'][] = [
+           $request['order']['line_items'][] = [
             'name' => $item['name'],
-            'quantity' => (float)$item['quantity'],
+            'quantity' => strval((float)$item['quantity']),
             'base_price_money' => [
               'amount' => $this->_amount($item['price'] + $item['tax'], $order->data['currency_code'], $order->data['currency_value']),
               'currency' => $order->data['currency_code'],
