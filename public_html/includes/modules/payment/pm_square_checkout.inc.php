@@ -17,7 +17,19 @@
     // If not enabled
       if (empty($this->settings['status'])) return;
 
-      
+    // disable for forbidden options (only works with Check Box styled options
+      $forbidden_options = preg_split('#\s*,\s*#', $this-> settings['forbidden_options']);
+      if (!is_bool($forbidden_options)) {
+        foreach ($forbidden_options as $forbidden_option) {
+          foreach ($items as $item) {
+            $options = $item['options'];
+
+            if (isset($options[$forbidden_option])) {
+              return;
+            }
+          }
+        }
+      }     
 
       $options = [];
 
@@ -31,7 +43,6 @@
           'tax_class_id' => 0,
           'confirm' => language::translate(__CLASS__.':title_pay_now', 'Pay Now'),
         ];
-      }
 
       return [
         'title' => $this->name,
@@ -168,6 +179,13 @@
           'default_value' => 'images/payment/square.jpg',
           'title' => language::translate(__CLASS__.':title_icon', 'Icon'),
           'description' => language::translate(__CLASS__.':description_icon', 'Path to an image to be displayed.'),
+          'function' => 'text()',
+        ],
+        [
+          'key' => 'forbidden_options',
+          'default_value' => '',
+          'title' => language::translate(__CLASS__.':title_forbidden_options', 'Forbidden Options'),
+          'description' => language::translate(__CLASS__.':description_forbidden_options', 'A comma separated list of payment options for which this module should be disabled.'),
           'function' => 'text()',
         ],
         [
