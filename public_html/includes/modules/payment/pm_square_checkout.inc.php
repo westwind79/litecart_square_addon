@@ -186,7 +186,10 @@
         'Content-Type' => 'application/json',
       ];
 
-      $response = $client->call($method, $base_url.$endpoint, $request, $headers);
+      $url = $base_url.$endpoint; 
+      $log_message = '['. date('Y-m-d H:i:s e').'] calling square url: ' . $url . PHP_EOL . PHP_EOL;
+      file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
+      $response = $client->call($method, $url, $request, $headers);
 
       if (!$result = json_decode($response, true)) {
         throw new Exception('Invalid response from remote machine');
