@@ -50,7 +50,8 @@
           'pre_populate_buyer_email' => $order->data['customer_email'],
           'cancel_url' => document::ilink('checkout'),
           'order' => [
-            'location_id' => $this->settings['status'],
+            'location_id' => $this->settings['location_id'],
+            'reference_id' => $order->data['id'],
             'name' => settings::get('store_name'),
             'line_items' => [],
             'price_money' => [
@@ -60,13 +61,25 @@
           ],
         ];
 
+        foreach ($order->data['items'] as $item) {
+           if ($item['price'] <= 0) continue;
+           $request['line_items'][] = [
+            'name' => $item['name'],
+            'quantity' => (float)$item['quantity'],
+            'base_price_money' => [
+              'amount' => $this->_amount($item['price'] + $item['tax'], $order->data['currency_code'], $order->data['currency_value']),
+              'currency' => $order->data['currency_code'],
+            ],
+           ];
+        }
+
         $result = $this->_call('POST', '/online-checkout/payment-links', $request);
 
-        session::$data['square']['id'] = $result['payment']['id'];
+        session::$data['square']['order_id'] = $result['payment_link']['order_id'];
 
         return [
           'method' => 'GET',
-          'action' => $result['url'],
+          'action' => $result['payment_link']['url'],
         ];
 
       } catch (Exception $e) {
@@ -81,7 +94,7 @@
           throw new Exception('Missing order id');
         }
 
-        $result = $this->_call('GET', '/online-checkout/payment-links/'. session::$data['square']['id']);
+        $result = $this->_call('GET', '/orders/'. session::$data['square']['order_id']);
 
         if (empty($result)) {
           throw new Exception('Failed to create payment link');
