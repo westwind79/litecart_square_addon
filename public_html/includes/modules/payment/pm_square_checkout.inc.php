@@ -94,7 +94,9 @@
 
         $request = [
           'idempotency_key' => uniqid(),
-          'redirect_url' => document::ilink('order_process'),
+          'checkout_options' => [
+            'redirect_url' => document::ilink('order_process')
+          ],
           'pre_populated_data' => [
             'buyer_email' => $order->data['customer']['email'],
           ],
