@@ -189,7 +189,7 @@
       file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
       $log_message = 'with data: ' . json_encode($request) . PHP_EOL . PHP_EOL;
       file_put_contents(FS_DIR_STORAGE . 'logs/debug.log', $log_message, FILE_APPEND);
-      $response = $client->call($method, $url, $request, $headers);
+      $response = $client->call($method, $url, $request ? json_encode($request, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES) : '', $headers);
 
       if (!$result = json_decode($response, true)) {
         throw new Exception('Invalid response from remote machine');
