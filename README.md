@@ -28,10 +28,10 @@ Done!
 3. Go to Developers from the menu and select API keys.
 
 #################################
-# How To Enable Stripe Checkout #
+# How To Enable Square Checkout #
 #################################
 
-1. Sign in to your Stripe account.
+1. Sign in to your Square account.
 2. Toggle live or test mode [o] View test data
 3. Select Settings from the menu.
 4. Go to Checkout settings and enable using the toggle.
