@@ -150,6 +150,7 @@
 
         return [
           'is_payed' => 'true',
+          'payment_terms' => 'PWO',
           'order_status_id' => $this->settings['order_status_id'],
           'transaction_id' => $result['order']['id'],
         ];
