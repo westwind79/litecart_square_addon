@@ -16,7 +16,7 @@
 
       // If not in geo zone
       if (!empty($this->settings['geo_zone_id'])) {
-        if (!reference::country($customer['country_code'])->in_geo_zone($customer['zone_code'], $this->settings['geo_zone_id'])) return;
+        if (!reference::country($customer['country_code'])->in_geo_zone($this->settings['geo_zone_id'], $customer)) return;
       }
 
       $forbidden_items = $this-> settings['forbidden_items'];
