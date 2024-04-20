@@ -43,3 +43,11 @@ Done!
 8. Fill in the Application ID and Access Token from your Square account.
 9. Fill in remaining details as applies to your store.
 10. Click 'Save'.
+
+#################################
+# Extra Notes #
+#################################
+`Go to Admin Panel -> Modules to install and configure your new module` includes specifying your location from Square's side.
+It may be helpful to watch this video: https://youtu.be/3s_3YUDsIzw
+
+Square requires setting up a location (even for the mobile Square terminal). This location must also be set in LiteCart (or use a new location for LiteCart specific checkout).
