@@ -182,7 +182,7 @@
       $client = new wrap_http();
 
       $headers = [
-        'Square-Version' => '2023-07-20',
+        'Square-Version' => '2024-11-20',
         'Authorization' => 'Bearer '. $this->settings['access_token'],
         'Content-Type' => 'application/json',
       ];
